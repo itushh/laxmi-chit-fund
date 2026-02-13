@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Lander from "./pages/Lander";
+import Lander from "./pages/lander/Lander";
 
 export function App() {
   return (
