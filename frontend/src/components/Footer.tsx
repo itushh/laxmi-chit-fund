@@ -33,7 +33,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-center pb-2">Made with Love by Tushar Ramgirkar</div>
+        <div className="text-center pb-2 text-xs uppercase"><span className="text-primary/70">Brought to you by </span>Laxmi Chit Fund</div>
       </div>
     </div>
   );

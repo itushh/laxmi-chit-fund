@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import Flow from "./Flow";
+import Flow from "../../components/Flow";
 import Hero from "./Hero";
 
 const Lander = () => {

@@ -1,16 +1,21 @@
 import Header from "@/components/Header";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <div className="h-dvh bg-black bg-linear-to-br from-[#010A10] to-black">
       <div className="max-w-300 mx-auto h-full flex flex-col justify-end">
         <div className="border border-border py-5">
-            <Header />
+          <Header />
         </div>
         <div className="flex-1 flex flex-col items-center justify-center border border-border">
-            <h1>Double your money within 21 days</h1>
-            <p className="text-primary/70">the scheme used by rich people to grow their money</p>
-            <button>Invest Now</button>
+          <h1>Double your money within 21 days</h1>
+          <p className="text-primary/70">
+            the scheme used by rich people to grow their money
+          </p>
+          <Link to="/invest">
+            <button className="mt-5 px-5 py-2 border border-border">Invest Now</button>
+          </Link>
         </div>
         <div className="border border-border flex justify-between py-10">
           <div>
