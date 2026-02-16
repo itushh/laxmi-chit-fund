@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const prices = [
   {
     price: 10,
@@ -33,7 +35,9 @@ const Pricing = () => {
         ))}
       </div>
       <div className="flex justify-center mt-10">
-        <button className="border border-border px-5 py-2">Continue</button>
+        <Link to="/dashboard">
+          <button className="border border-border px-5 py-2">Continue</button>
+        </Link>
       </div>
     </>
   );
