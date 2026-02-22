@@ -1,18 +1,34 @@
 import express from "express";
 import { connectDB } from "./lib/db.js";
 import { authRouter } from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import { config } from "dotenv";
+
+config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
+
+//middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN,
+    credentials: true,
+  }),
+);
 
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "server running",
-    health: "good"
+    health: "good",
   });
 });
 
-app.use('/api/auth', authRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(PORT, async () => {
   await connectDB();

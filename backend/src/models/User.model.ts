@@ -41,7 +41,6 @@ const UserSchema = new Schema<IUserDocument>(
       required: true,
       minlength: 6,
       select: false,
-      match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address!"],
     },
   },
   {

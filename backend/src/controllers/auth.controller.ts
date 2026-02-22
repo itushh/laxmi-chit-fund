@@ -20,7 +20,7 @@ const loginSchema = z.object({
 
 const generateToken = (userId: string): string => {
   const secret = process.env.JWT_SECRET;
-  if (!secret) throw new Error("ENV VARIABLE NOT PROVIDED : JWT_SECRETE");
+  if (!secret) throw new Error("ENV VARIABLE NOT PROVIDED : JWT_SECRET");
 
   return jwt.sign({ id: userId }, secret, {
     expiresIn: "7d",
@@ -40,7 +40,7 @@ export const register = async (req: Request, res: Response) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists",
+        errors: ["User already exists"],
       });
     }
 
@@ -48,16 +48,22 @@ export const register = async (req: Request, res: Response) => {
 
     const token = generateToken(user._id.toString());
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
-      token,
     });
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         success: false,
-        errors: error.issues.map((issue) => issue.message)
+        errors: error.issues.map((issue) => issue.message),
       });
     }
 
@@ -65,7 +71,7 @@ export const register = async (req: Request, res: Response) => {
 
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      errors: ["Internal Server error"],
     });
   }
 };
@@ -83,7 +89,7 @@ export const login = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid credentials",
+        errors: ["Invalid credentials"],
       });
     }
 
@@ -92,16 +98,22 @@ export const login = async (req: Request, res: Response) => {
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: "Invalid credentials",
+        errors: ["Invalid credentials"],
       });
     }
 
     const token = generateToken(user._id.toString());
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      token,
     });
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
@@ -115,7 +127,7 @@ export const login = async (req: Request, res: Response) => {
 
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      errors: ["Internal Server Error"],
     });
   }
 };
@@ -138,7 +150,7 @@ export const logout = async (_req: Request, res: Response) => {
 
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      errors: ["Internal Sever Error"],
     });
   }
 };
